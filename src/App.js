@@ -6,7 +6,7 @@ function App() {
     <div className="App" style={{ padding: 16 }}>
       <CountDown
         widthInput={110}
-        secondsInput={60}
+        secondsInput={5400}
       />
     </div>
   );
