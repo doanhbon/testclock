@@ -4,34 +4,33 @@
 import React, { useState, useEffect } from 'react';
 import ClockCountDown from './clock';
 
+const convertSecondsToMinutes = secInput => {
+  if (secInput === 0 || secInput < 0) {
+    return {
+      _minutes: '00',
+      _seconds: '00'
+    };
+  }
+  let _secInput = secInput;
+  const _minutes =
+    parseInt(_secInput / 60, 10) < 10
+      ? `0${parseInt(_secInput / 60, 10)}`
+      : parseInt(_secInput / 60, 10);
+  // secondxs %= 60;
+  _secInput = parseInt(_secInput, 10) % 60;
+  const _seconds = _secInput < 10 ? `0${_secInput}` : _secInput;
+
+  return {
+    _minutes,
+    _seconds
+  };
+};
 
 const Clock = props => {
   const {
     secondsInput,
     widthInput,
-  } = props;
-
-  const convertSecondsToMinutes = secInput => {
-    if (secInput === 0 || secInput < 0) {
-      return {
-        _minutes: '00',
-        _seconds: '00'
-      };
-    }
-    let _secInput = secInput;
-    const _minutes =
-      parseInt(_secInput / 60, 10) < 10
-        ? `0${parseInt(_secInput / 60, 10)}`
-        : parseInt(_secInput / 60, 10);
-    // secondxs %= 60;
-    _secInput = parseInt(_secInput, 10) % 60;
-    const _seconds = _secInput < 10 ? `0${_secInput}` : _secInput;
-  
-    return {
-      _minutes,
-      _seconds
-    };
-  };
+  } = props; 
 
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
@@ -57,10 +56,13 @@ const Clock = props => {
     return result >= 0 ? result : 0;
   };
 
+  console.log('currentSecond = ', currentSecond);
+  console.log('currentPercent = ', calculatePercent(secondsInput).toFixed(6));
+
   const handleNumberWhenTimeChange = () => {
     setMinutes(convertSecondsToMinutes(Math.ceil(currentSecond))._minutes);
     setSeconds(convertSecondsToMinutes(Math.ceil(currentSecond))._seconds);
-    setPercent(calculatePercent(secondsInput));
+    setPercent(calculatePercent(secondsInput).toFixed(6));
   };
 
   const handleTimeCountDown = () => {
