@@ -56,9 +56,6 @@ const Clock = props => {
     return result >= 0 ? result : 0;
   };
 
-  console.log('currentSecond = ', currentSecond);
-  console.log('currentPercent = ', calculatePercent(secondsInput).toFixed(6));
-
   const handleNumberWhenTimeChange = () => {
     setMinutes(convertSecondsToMinutes(Math.ceil(currentSecond))._minutes);
     setSeconds(convertSecondsToMinutes(Math.ceil(currentSecond))._seconds);
@@ -77,7 +74,7 @@ const Clock = props => {
   useEffect(() => {
     const timer = setTimeout(
       () => handleTimeCountDown(),
-      10
+      100
     );
 
     return () => clearTimeout(timer);
