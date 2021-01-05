@@ -116,9 +116,13 @@ const Clock = props => {
   // };
 
   useEffect(() => {
-    console.log('percent key canvas = ', percent);
     // var canvas = document.getElementById("clockCanvas");
-    const canvas = document.getElementById('clockCanvas'); //canvasRef.current;
+    const canvas = canvasRef.current;
+    console.log('canvas.clientWidth = ', canvas.clientWidth);
+
+    if (canvas.clientWidth !== width) {
+      return;
+    }
 
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, width, width);
