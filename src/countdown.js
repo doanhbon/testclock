@@ -59,7 +59,7 @@ const Clock = props => {
   const handleNumberWhenTimeChange = () => {
     setMinutes(convertSecondsToMinutes(Math.ceil(currentSecond))._minutes);
     setSeconds(convertSecondsToMinutes(Math.ceil(currentSecond))._seconds);
-    setPercent(calculatePercent(secondsInput));
+    setPercent(calculatePercent(secondsInput).toFixed(3));
   };
 
   const handleTimeCountDown = () => {
