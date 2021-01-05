@@ -50,9 +50,9 @@ const Clock = props => {
   //   return d;
   // };
 
-  const [cx] = useState(width * 0.5);
-  const [cy] = useState(width * 0.5);
-  const [radius] = useState((width * 0.8) / 2);
+  const cx = width * 0.5;
+  const cy = width * 0.5;
+  const radius = (width - strokeWidth) / 2;
 
   // const displayBackgroudStroke = useMemo(() => {
   //   return (
@@ -118,11 +118,6 @@ const Clock = props => {
   useEffect(() => {
     // var canvas = document.getElementById("clockCanvas");
     const canvas = canvasRef.current;
-    console.log('canvas.clientWidth = ', canvas.clientWidth);
-
-    if (canvas.clientWidth !== width) {
-      return;
-    }
 
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, width, width);
@@ -157,9 +152,6 @@ const Clock = props => {
 
   }, 
   [
-    cx,
-    cy,
-    radius,
     width,
     percent,
     strokeColor,
@@ -174,7 +166,7 @@ const Clock = props => {
   // {displayBackgroundCircle}
   // {displayText()}
   return (
-    <canvas id="clockCanvas" width={width} height={width} ref={canvasRef}>
+    <canvas id="clockCanvas" width={width} height={width} ref={canvasRef} style={{ borderRadius: width / 2, overflow: 'hidden', position: 'relative' }}>
       
     </canvas>
   );
