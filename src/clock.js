@@ -18,110 +18,116 @@ const Clock = props => {
   } = props;
   const canvasRef = useRef();
 
-  const polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
-    const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
+  // const polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
+  //   const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
 
-    return {
-      x: centerX + radius * Math.cos(angleInRadians),
-      y: centerY + radius * Math.sin(angleInRadians)
-    };
-  };
+  //   return {
+  //     x: centerX + radius * Math.cos(angleInRadians),
+  //     y: centerY + radius * Math.sin(angleInRadians)
+  //   };
+  // };
 
-  const describeArc = (x, y, radius, startAngle, endAngle) => {
-    const start = polarToCartesian(x, y, radius, endAngle);
-    const end = polarToCartesian(x, y, radius, startAngle);
+  // const describeArc = (x, y, radius, startAngle, endAngle) => {
+  //   const start = polarToCartesian(x, y, radius, endAngle);
+  //   const end = polarToCartesian(x, y, radius, startAngle);
 
-    const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
+  //   const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1';
 
-    const d = [
-      'M',
-      start.x,
-      start.y,
-      'A',
-      radius,
-      radius,
-      0,
-      largeArcFlag,
-      0,
-      end.x,
-      end.y
-    ].join(' ');
+  //   const d = [
+  //     'M',
+  //     start.x,
+  //     start.y,
+  //     'A',
+  //     radius,
+  //     radius,
+  //     0,
+  //     largeArcFlag,
+  //     0,
+  //     end.x,
+  //     end.y
+  //   ].join(' ');
 
-    return d;
-  };
+  //   return d;
+  // };
 
   const [cx] = useState(width * 0.5);
   const [cy] = useState(width * 0.5);
   const [radius] = useState((width * 0.8) / 2);
 
-  const displayBackgroudStroke = useMemo(() => {
-    return (
-      <path
-        id="arc1"
-        d={describeArc(cx, cy, radius, 0, 359.9999)}
-        fill="none"
-        stroke={colorStroke}
-        strokeWidth={strokeWidth}
-      />
-    );
-  }, [cx, cy, radius, colorStroke, strokeWidth]);
+  // const displayBackgroudStroke = useMemo(() => {
+  //   return (
+  //     <path
+  //       id="arc1"
+  //       d={describeArc(cx, cy, radius, 0, 359.9999)}
+  //       fill="none"
+  //       stroke={colorStroke}
+  //       strokeWidth={strokeWidth}
+  //     />
+  //   );
+  // }, [cx, cy, radius, colorStroke, strokeWidth]);
 
-  const displayPercentStroke = () => {
-    return (
-      <path
-        id="arc1"
-        d={describeArc(
-          cx,
-          cy,
-          radius,
-          0,
-          percent !== initPercent ? (360 / initPercent) * percent : 359.9999
-        )}
-        fill="none"
-        stroke={strokeColor}
-        strokeWidth={strokeWidth}
-      />
-    );
-  };
+  // const displayPercentStroke = () => {
+  //   return (
+  //     <path
+  //       id="arc1"
+  //       d={describeArc(
+  //         cx,
+  //         cy,
+  //         radius,
+  //         0,
+  //         percent !== initPercent ? (360 / initPercent) * percent : 359.9999
+  //       )}
+  //       fill="none"
+  //       stroke={strokeColor}
+  //       strokeWidth={strokeWidth}
+  //     />
+  //   );
+  // };
 
-  const displayBackgroundCircle = useMemo(() => {
-    return (
-      <circle
-        cx={cx}
-        cy={cy}
-        r={radius}
-        stroke="none"
-        strokeWidth="0"
-        fill={backgroundClock}
-      />
-    );
-  }, [cx, cy, radius, backgroundClock]);
+  // const displayBackgroundCircle = useMemo(() => {
+  //   return (
+  //     <circle
+  //       cx={cx}
+  //       cy={cy}
+  //       r={radius}
+  //       stroke="none"
+  //       strokeWidth="0"
+  //       fill={backgroundClock}
+  //     />
+  //   );
+  // }, [cx, cy, radius, backgroundClock]);
 
-  const displayText = () => {
-    return (
-      <text
-        x={cx}
-        y={cy}
-        fill={textColor}
-        stroke={textStrokeColor}
-        dominantBaseline="middle"
-        textAnchor="middle"
-        fontWeight="bold"
-        fontSize={textSize}
-        strokeWidth={textStrokeWidth}
-      >
-        {text}
-      </text>
-    );
-  };
+  // const displayText = () => {
+  //   return (
+  //     <text
+  //       x={cx}
+  //       y={cy}
+  //       fill={textColor}
+  //       stroke={textStrokeColor}
+  //       dominantBaseline="middle"
+  //       textAnchor="middle"
+  //       fontWeight="bold"
+  //       fontSize={textSize}
+  //       strokeWidth={textStrokeWidth}
+  //     >
+  //       {text}
+  //     </text>
+  //   );
+  // };
 
   useEffect(() => {
-    console.log('percent = ', percent);
+    console.log('percent canvas = ', percent);
     // var canvas = document.getElementById("clockCanvas");
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, width, width);
     ctx.lineWidth = strokeWidth;
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+    ctx.fillStyle = backgroundClock;
+    ctx.fill();
+    ctx.closePath();
 
     ctx.beginPath();
     ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
