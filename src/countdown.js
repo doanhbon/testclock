@@ -74,7 +74,7 @@ const Clock = props => {
   useEffect(() => {
     const timer = setTimeout(
       () => handleTimeCountDown(),
-      100
+      1000
     );
 
     return () => clearTimeout(timer);
