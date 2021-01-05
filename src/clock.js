@@ -119,6 +119,8 @@ const Clock = props => {
     console.log('percent canvas = ', percent);
     // var canvas = document.getElementById("clockCanvas");
     const canvas = canvasRef.current;
+    canvas.width = width;
+    canvas.height = width;
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, width, width);
     ctx.lineWidth = strokeWidth;
