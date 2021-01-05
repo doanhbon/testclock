@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 const Clock = props => {
@@ -16,6 +16,8 @@ const Clock = props => {
     textSize,
     textStrokeWidth
   } = props;
+  const canvasRef = useRef();
+
   const polarToCartesian = (centerX, centerY, radius, angleInDegrees) => {
     const angleInRadians = ((angleInDegrees - 90) * Math.PI) / 180.0;
 
@@ -113,18 +115,57 @@ const Clock = props => {
     );
   };
 
+  useEffect(() => {
+    console.log('percent = ', percent);
+    // var canvas = document.getElementById("clockCanvas");
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, width, width);
+    ctx.lineWidth = strokeWidth;
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, 2 * Math.PI);
+    ctx.strokeStyle = colorStroke;
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, -0.5 * Math.PI + (2 * (percent / 100) * Math.PI), - 0.5 * Math.PI, true);
+    ctx.strokeStyle = strokeColor;
+    ctx.stroke();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.lineWidth = textStrokeWidth;
+    ctx.strokeStyle = textStrokeColor;
+    ctx.font = `${textSize}px Roboto`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = 'middle';
+    ctx.strokeText(text, width / 2, width / 2, width - 2 * strokeWidth);
+    ctx.closePath();
+
+  }, 
+  [
+    cx,
+    cy,
+    radius,
+    width,
+    percent,
+    strokeColor,
+    strokeWidth,
+    text,
+    textSize,
+    textStrokeColor,
+    textStrokeWidth
+  ]);
+  // {displayBackgroudStroke}
+  // {displayPercentStroke()}
+  // {displayBackgroundCircle}
+  // {displayText()}
   return (
-    <svg
-      width={width}
-      height={width}
-      xmlns="http://www.w3.org/2000/svg"
-      version="1.1"
-    >
-      {displayBackgroudStroke}
-      {displayPercentStroke()}
-      {displayBackgroundCircle}
-      {displayText()}
-    </svg>
+    <canvas id="clockCanvas" width={width} height={width} ref={canvasRef}>
+      
+    </canvas>
   );
 };
 
@@ -154,10 +195,10 @@ Clock.defaultProps = {
   initPercent: 100,
   text: 'Clock',
   colorStroke: '#EEEEEE',
-  strokeWidth: 20,
+  strokeWidth: 10,
   backgroundClock: '#FFFFFF',
   textColor: '#FFFFFF',
-  textSize: 25,
+  textSize: 20,
   textStrokeColor: '#000000',
   textStrokeWidth: 2
 };
